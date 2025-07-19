@@ -278,6 +278,10 @@ PostDown = ip6tables -t nat -D POSTROUTING -o ${SERVER_PUB_NIC} -j MASQUERADE" >
 	# Enable routing on the server
 	echo "net.ipv4.ip_forward = 1
 net.ipv6.conf.all.forwarding = 1" >/etc/sysctl.d/wg.conf
+	#Enable ipv6 on the server
+ 	sed -i 's/^net\.ipv6\.conf\.all\.disable_ipv6\s*=.*/net.ipv6.conf.all.disable_ipv6 = 0/' "/etc/sysctl.conf"
+	sed -i 's/^net\.ipv6\.conf\.default\.disable_ipv6\s*=.*/net.ipv6.conf.default.disable_ipv6 = 0/' "/etc/sysctl.conf"
+	sed -i 's/^net\.ipv6\.conf\.lo\.disable_ipv6\s*=.*/net.ipv6.conf.lo.disable_ipv6 = 0/' "/etc/sysctl.conf"
 
 	if [[ ${OS} == 'alpine' ]]; then
 		sysctl -p /etc/sysctl.d/wg.conf
